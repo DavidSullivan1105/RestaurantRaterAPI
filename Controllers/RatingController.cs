@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
+using RestaurantRaterAPI.Models;
 
 namespace RestaurantRaterAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RatingController
+    public class RatingController : Controller
     {
         private RestaurantDbContext _context;
         public RatingController (RestaurantDbContext context)
         {
             _context = context;
         }
-    [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> PostRestaurant([FromForm] RatingEdit model)
         {
         if (!ModelState.IsValid)
         {
-            return BadRequestResult(ModelState);
+            return BadRequest(ModelState);
         }
         _context.Ratings.Add(new Rating() {
             FoodScore = model.FoodScore,
@@ -31,7 +31,7 @@ namespace RestaurantRaterAPI.Controllers
         });
 
         await _context.SaveChangesAsync();
-        return OkResult();
+        return Ok();
         }
     }
 }

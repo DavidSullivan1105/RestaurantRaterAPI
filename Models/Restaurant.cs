@@ -28,7 +28,7 @@ namespace RestaurantRaterAPI.Models
                 double total = 0.0;
                 foreach (Rating rating in Ratings)
                 {
-                    total += rating.Foodscore;
+                    total += rating.FoodScore;
                 }
                 return total / Ratings.Count;
             }

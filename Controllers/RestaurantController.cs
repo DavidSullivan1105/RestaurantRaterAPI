@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using RestaurantRaterAPI.Models;
@@ -14,10 +15,10 @@ namespace RestaurantRaterAPI.Controllers
         {
             _context = context;
         }
-    }
-    [HttpPost]
-    public async Task<IActionResult> PostRestaurant([FromForm] RestaurantEdit model)
-    {
+    
+        [HttpPost]
+        public async Task<IActionResult> PostRestaurant([FromForm] RestaurantEdit model)
+        {
         if(!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -28,11 +29,12 @@ namespace RestaurantRaterAPI.Controllers
             Location = model.Location,
         });
         await _context.SaveChangesAsync();
-        return OkResult();
-    }
-    [HttpGet]
-    public async Task<IActionResult> GetAllRestaurants()
-    {
+        return Ok();
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetAllRestaurants()
+        {
         var restaurants = await _context.Restaurants.Include(r => r.Ratings).ToListAsync();
         List<RestaurantListItem> restaurantList = restaurantdata.Select(r => new RestaurantListItem()
         {
@@ -41,19 +43,19 @@ namespace RestaurantRaterAPI.Controllers
             Location = r.Location,
             AverageScore = r.AverageScore,
         }).ToList();
-        return OkResult(restaurantList);
-    }
-    [HttpGet]
-    [Route("{id}")]
-    public async Task<IActionResult> GetRestaurantById(int id)
-    {
+        return Ok(restaurantList);
+        }
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetRestaurantById(int id)
+        {
         var restaurant = await _context.Restaurants.Include(r => r.Ratings).FirstOrDefaultAsync(r => r.Id == id);
 
         if(restaurant == null)
         {
-            return NotFoundResult();
+            return NotFound();
         }
-        return OkResult(restaurant);
+        return Ok(restaurant);
     }
     [HttpPut]
     [Route("{id}")]
@@ -62,11 +64,11 @@ namespace RestaurantRaterAPI.Controllers
         var oldRestaurant = await _context.Restaurants.FindAsync(id);
         if(oldRestaurant == null)
         {
-            return NotFoundResult();
+            return NotFound();
         }
         if (!ModelState.IsValid)
         {
-            return BadRequestResult();
+            return BadRequest();
         }
         if(!string.IsNullOrEmpty(model.Name))
         {
@@ -77,7 +79,7 @@ namespace RestaurantRaterAPI.Controllers
             oldRestaurant.Location = model.Location;
         }
         await _context.SaveChangesAsync();
-        return OkResult();
+        return Ok();
     }
     [HttpDelete]
     [Route("{id}")]
@@ -86,11 +88,11 @@ namespace RestaurantRaterAPI.Controllers
         var restaurant = await _context.Restauants.FindAsync(id);
         if(restaurant == null)
         {
-            return NotFoundResult();
+            return NotFound();
         }
         _context.Restaurants.Remove(restaurant);
         await _context.SaveChangesAsync();
-        return OkResult();
+        return Ok();
     }
-    
+    }
 }
