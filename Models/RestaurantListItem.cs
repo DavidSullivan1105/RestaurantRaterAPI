@@ -10,6 +10,6 @@ namespace RestaurantRaterAPI.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
-        public float AverageScore { get; set; }
+        public double AverageFoodScore { get; set; }
     }
 }

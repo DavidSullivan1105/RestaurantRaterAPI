@@ -17,6 +17,8 @@ namespace RestaurantRaterAPI.Models
         [MaxLength(100)]
         public string Location { get; set; }
         public virtual List<Rating> Ratings { get; set; } = new List<Rating>();
+
+        public double AverageScore { get; set; }
         public double AverageFoodScore
         {
             get

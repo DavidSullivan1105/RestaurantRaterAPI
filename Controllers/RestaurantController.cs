@@ -23,10 +23,13 @@ namespace RestaurantRaterAPI.Controllers
         {
             return BadRequest(ModelState);
         }
-        _context.Restaurants.Add(new Restaurant()
+        _context.Ratings.Add(new Rating()
         {
-            Name = model.Name,
-            Location = model.Location,
+            FoodScore = model.FoodScore,
+            CleanlinessScore = model.CleanlinessScore,
+            AtmosphereScore = model.AtmosphereScore,
+            RestaurantId = model.RestaurantId,
+
         });
         await _context.SaveChangesAsync();
         return Ok();
@@ -36,15 +39,16 @@ namespace RestaurantRaterAPI.Controllers
         public async Task<IActionResult> GetAllRestaurants()
         {
         var restaurants = await _context.Restaurants.Include(r => r.Ratings).ToListAsync();
-        List<RestaurantListItem> restaurantList = restaurantdata.Select(r => new RestaurantListItem()
-        {
-            Id = r.Id,
-            Name = r.Name,
-            Location = r.Location,
-            AverageScore = r.AverageScore,
-        }).ToList();
-        return Ok(restaurantList);
+        // List<RestaurantListItem> restaurantList = await _context.Restaurants.Select(r => new RestaurantListItem()
+        // {
+        //     Id = r.Id,
+        //     Name = r.Name,
+        //     Location = r.Location,
+        //     AverageFoodScore = r.AverageFoodScore,
+        // }).ToListAsync();
+        return Ok(restaurants);
         }
+        
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetRestaurantById(int id)
@@ -85,7 +89,7 @@ namespace RestaurantRaterAPI.Controllers
     [Route("{id}")]
     public async Task<IActionResult> DeleteRestaurant([FromRoute] int id)
     {
-        var restaurant = await _context.Restauants.FindAsync(id);
+        var restaurant = await _context.Restaurants.FindAsync(id);
         if(restaurant == null)
         {
             return NotFound();

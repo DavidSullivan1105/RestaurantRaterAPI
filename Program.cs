@@ -37,21 +37,21 @@ internal class Program
         app.Run();
     }
 
-    public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestaurantRaterAPI", Version = "v1" });
-            });
-            services.AddHttpsRedirection(options => options.HttpsPort = 443);
+    // public void ConfigureServices(IServiceCollection services)
+    //     {
+    //         services.AddControllers();
+    //         services.AddSwaggerGen(c =>
+    //         {
+    //             c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestaurantRaterAPI", Version = "v1" });
+    //         });
+    //         services.AddHttpsRedirection(options => options.HttpsPort = 443);
 
-        }
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder=>
-            {
-                webBuilder.UseStartup<StartupBase>();
-                webBuilder.UseUrls("http://localhost:80", "https://localhost:443");
-            });
+    //     }
+    // public static IHostBuilder CreateHostBuilder(string[] args) =>
+    //     Host.CreateDefaultBuilder(args)
+    //         .ConfigureWebHostDefaults(webBuilder=>
+    //         {
+    //             webBuilder.UseStartup<StartupBase>();
+    //             webBuilder.UseUrls("http://localhost:80", "https://localhost:443");
+    //         });
 }
